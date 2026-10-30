@@ -119,3 +119,7 @@ Updates the balance sensors now.
 pip install -r requirements_test.txt
 pytest tests
 ```
+
+## License
+
+GNU Affero General Public License v3.0; see [LICENSE](LICENSE).
