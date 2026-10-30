@@ -20,7 +20,7 @@ def _device(hass, entry, kind, object_id):
 
 async def _add(hass, device_id, **data):
     return await hass.services.async_call(
-        "splitpro", "add_expense", {"device_id": device_id, **data}, blocking=True, return_response=True
+        "splitpro", "add_expense", {"device": device_id, **data}, blocking=True, return_response=True
     )
 
 
@@ -174,7 +174,7 @@ async def test_split_pro_down(hass, fake):
 async def test_settle_up(hass, fake):
     entry = await setup_entry(hass)
     response = await hass.services.async_call(
-        "splitpro", "settle_up", {"device_id": _device(hass, entry, "friend", 2), "amount": 15},
+        "splitpro", "settle_up", {"device": _device(hass, entry, "friend", 2), "amount": 15},
         blocking=True, return_response=True,
     )
     expense = fake.posted[-1][0]
@@ -185,7 +185,7 @@ async def test_settle_up(hass, fake):
     # In a group, the recipient has to be named.
     with pytest.raises(ServiceValidationError) as err:
         await hass.services.async_call(
-            "splitpro", "settle_up", {"device_id": _device(hass, entry, "group", 10), "amount": 5}, blocking=True
+            "splitpro", "settle_up", {"device": _device(hass, entry, "group", 10), "amount": 5}, blocking=True
         )
     assert err.value.translation_key == "recipient_required"
 
@@ -221,6 +221,14 @@ async def test_float_amounts_are_taken_as_typed(hass, fake):
     assert fake.posted[-1][0]["amount"] == "466"
     assert _participants(fake) == {1: 456, 2: -456}
     await hass.services.async_call(
-        "splitpro", "settle_up", {"device_id": _device(hass, entry, "friend", 2), "amount": 0.3}, blocking=True
+        "splitpro", "settle_up", {"device": _device(hass, entry, "friend", 2), "amount": 0.3}, blocking=True
     )
     assert fake.posted[-1][0]["amount"] == "30"
+
+
+async def test_category_options_map_to_split_pro_values(hass, fake):
+    entry = await setup_entry(hass)
+    await _add(hass, _device(hass, entry, "group", 10), description="Curry", amount=20, category="dining_out")
+    assert fake.posted[-1][0]["category"] == "diningOut"
+    await _add(hass, _device(hass, entry, "group", 10), description="Curry", amount=20, category="diningOut")
+    assert fake.posted[-1][0]["category"] == "diningOut"

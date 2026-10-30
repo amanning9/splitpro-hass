@@ -10,7 +10,7 @@
           "verify_ssl": "Verify SSL certificate"
         },
         "data_description": {
-          "url": "Split Pro's address, e.g. https://splitpro.example.com or http://192.168.1.10:3000.",
+          "url": "Split Pro's address, starting with http:// or https://, including the port if it isn't the standard one.",
           "api_key": "A secret from the API_KEYS setting on the Split Pro server (the part after `email:`).",
           "verify_ssl": "Turn off only for a self-signed certificate."
         }
@@ -47,7 +47,7 @@
           "verify_ssl": "Verify SSL certificate"
         },
         "data_description": {
-          "url": "Split Pro's address, e.g. https://splitpro.example.com or http://192.168.1.10:3000.",
+          "url": "Split Pro's address, starting with http:// or https://, including the port if it isn't the standard one.",
           "api_key": "A secret from the API_KEYS setting on the Split Pro server (the part after `email:`).",
           "verify_ssl": "Turn off only for a self-signed certificate."
         }
@@ -119,7 +119,7 @@
         "music": "Music",
         "sports": "Sports",
         "food": "Food",
-        "diningOut": "Dining out",
+        "dining_out": "Dining out",
         "groceries": "Groceries",
         "liquor": "Liquor",
         "home": "Home",
@@ -163,8 +163,12 @@
   "services": {
     "add_expense": {
       "name": "Add expense",
-      "description": "Adds an expense to a Split Pro group, or with a friend. Target one group or friend device. Returns the expense id and each person's share.",
+      "description": "Adds an expense to a Split Pro group, or with a friend. Returns the expense id and each person's share.",
       "fields": {
+        "device": {
+          "name": "Group or friend",
+          "description": "The Split Pro group or friend device it's for."
+        },
         "description": {
           "name": "Description",
           "description": "What it was for."
@@ -191,7 +195,7 @@
         },
         "shares": {
           "name": "Shares",
-          "description": "For percentages, shares or exact amounts: each person and their value, e.g. {\"Alex\": 60, \"Sam\": 40}. People left out pay nothing."
+          "description": "For percentages, shares or exact amounts: each person and their value (for example Alex: 60 and Sam: 40). People left out pay nothing."
         },
         "category": {
           "name": "Category",
@@ -207,6 +211,10 @@
       "name": "Settle up",
       "description": "Records a payment between two people in a group, or between you and a friend.",
       "fields": {
+        "device": {
+          "name": "Group or friend",
+          "description": "The Split Pro group or friend device it's for."
+        },
         "amount": {
           "name": "Amount",
           "description": "How much was paid."
@@ -225,7 +233,7 @@
         },
         "description": {
           "name": "Description",
-          "description": "Defaults to \"<payer> paid <recipient>\"."
+          "description": "Defaults to the payer paid the recipient, for example \"Alex paid Sam\"."
         },
         "date": {
           "name": "Date",
@@ -240,7 +248,7 @@
   },
   "exceptions": {
     "unknown_target": {
-      "message": "Choose one Split Pro group or friend as the target."
+      "message": "Choose a Split Pro group or friend device."
     },
     "not_loaded": {
       "message": "That Split Pro account isn't loaded."

@@ -48,10 +48,11 @@ straight after the integration adds an expense, and when you call `splitpro.refr
 
 ### `splitpro.add_expense`
 
-Target one group or friend device. Returns the expense id and each person's share.
+Pick a group or friend device (`device`). Returns the expense id and each person's share.
 
 | Field | | |
 | --- | --- | --- |
+| `device` | required | The group or friend device. |
 | `description` | required | What it was for. |
 | `amount` | required | The total, e.g. `42.50`. |
 | `currency` | | Defaults to the group's default currency, then yours, then GBP. |
@@ -59,14 +60,13 @@ Target one group or friend device. Returns the expense id and each person's shar
 | `split` | | `default` (the group's or friend's saved default split, else equal), `equal`, `percentage`, `shares` or `exact`. |
 | `participants` | | For `equal`: who's included. Defaults to everyone. |
 | `shares` | | For `percentage`, `shares` or `exact`: each person and their value. People left out pay nothing. |
-| `category` | | A Split Pro category, default `general`. |
+| `category` | | A Split Pro category (e.g. `groceries`, `dining_out`), default `general`. |
 | `date` | | Defaults to now. A date alone means midday that day. |
 
 ```yaml
 action: splitpro.add_expense
-target:
-  device_id: <the group's device>
 data:
+  device: <the group's device id>
   description: Groceries
   amount: 42.50
   category: groceries
@@ -77,9 +77,8 @@ Split 60/40 and say who paid:
 
 ```yaml
 action: splitpro.add_expense
-target:
-  device_id: <the group's device>
 data:
+  device: <the group's device id>
   description: Electricity
   amount: 120
   paid_by: Sam
@@ -91,14 +90,13 @@ data:
 
 ### `splitpro.settle_up`
 
-Records a payment. For a friend, `recipient` defaults to the other person; in a group, name the
+Records a payment, for a group or friend `device`. For a friend, `recipient` defaults to the other person; in a group, name the
 `recipient`. `payer` defaults to you.
 
 ```yaml
 action: splitpro.settle_up
-target:
-  device_id: <the friend's device>
 data:
+  device: <the friend's device id>
   amount: 15
 ```
 

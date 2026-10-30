@@ -1,8 +1,10 @@
 add_expense:
-  target:
-    device:
-      integration: splitpro
   fields:
+    device:
+      required: true
+      selector:
+        device:
+          integration: splitpro
     description:
       required: true
       example: Groceries
@@ -58,7 +60,7 @@ add_expense:
             - music
             - sports
             - food
-            - diningOut
+            - dining_out
             - groceries
             - liquor
             - home
@@ -101,10 +103,12 @@ add_expense:
         datetime:
 
 settle_up:
-  target:
-    device:
-      integration: splitpro
   fields:
+    device:
+      required: true
+      selector:
+        device:
+          integration: splitpro
     amount:
       required: true
       example: 20

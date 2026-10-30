@@ -7,6 +7,7 @@ places itself.
 
 from __future__ import annotations
 
+import re
 from decimal import ROUND_HALF_UP, Decimal
 
 # Currencies whose smallest unit isn't 1/100 of the main unit.
@@ -41,6 +42,9 @@ CATEGORIES = (
     "utilities", "cleaning", "electricity", "gas", "internet", "trash", "phone", "water",
 )
 DEFAULT_CATEGORY = "general"
+
+# Home Assistant option keys must be lowercase, so diningOut is offered as dining_out.
+CATEGORY_OPTIONS = {re.sub(r"(?<!^)([A-Z])", r"_\1", c).lower(): c for c in CATEGORIES}
 
 
 def is_currency(code: str | None) -> bool:

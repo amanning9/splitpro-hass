@@ -20,7 +20,7 @@ from homeassistant.util import dt as dt_util
 from .api import SplitProError, SplitProRequestError
 from .const import DOMAIN, SERVICE_ADD_EXPENSE, SERVICE_REFRESH, SERVICE_SETTLE_UP
 from .coordinator import Group, Member, SplitProConfigEntry, SplitProCoordinator
-from .money import CATEGORIES, DEFAULT_CATEGORY, from_minor_units, is_currency, to_minor_units
+from .money import CATEGORIES, CATEGORY_OPTIONS, DEFAULT_CATEGORY, from_minor_units, is_currency, to_minor_units
 from .split import Split, SplitError, SplitType, equal, participant_amounts
 
 _LOGGER = logging.getLogger(__name__)
@@ -45,8 +45,8 @@ _SHARES = vol.Schema({cv.string: vol.All(_decimal, vol.Range(min=0))})
 
 ADD_EXPENSE_SCHEMA = vol.Schema(
     {
-        # From the action's target: exactly one Split Pro group or friend device.
-        vol.Required("device_id"): vol.All(cv.ensure_list, vol.Length(min=1, max=1), [cv.string]),
+        # A Split Pro group or friend device.
+        vol.Required("device"): cv.string,
         vol.Required("description"): vol.All(cv.string, vol.Length(min=1)),
         vol.Required("amount"): vol.All(_decimal, vol.Range(min=0, min_included=False)),
         vol.Optional("currency"): vol.All(cv.string, vol.Upper),
@@ -56,7 +56,9 @@ ADD_EXPENSE_SCHEMA = vol.Schema(
         ),
         vol.Optional("participants"): vol.All(cv.ensure_list, [cv.string]),
         vol.Optional("shares"): _SHARES,
-        vol.Optional("category", default=DEFAULT_CATEGORY): vol.In(CATEGORIES),
+        vol.Optional("category", default=DEFAULT_CATEGORY): vol.All(
+            cv.string, vol.In([*CATEGORY_OPTIONS, *CATEGORIES]), lambda c: CATEGORY_OPTIONS.get(c, c)
+        ),
         # Date first, so "2026-10-30" means that day (midday) rather than midnight.
         vol.Optional("date"): vol.Any(cv.date, cv.datetime),
     }
@@ -64,8 +66,8 @@ ADD_EXPENSE_SCHEMA = vol.Schema(
 
 SETTLE_UP_SCHEMA = vol.Schema(
     {
-        # From the action's target: exactly one Split Pro group or friend device.
-        vol.Required("device_id"): vol.All(cv.ensure_list, vol.Length(min=1, max=1), [cv.string]),
+        # A Split Pro group or friend device.
+        vol.Required("device"): cv.string,
         vol.Required("amount"): vol.All(_decimal, vol.Range(min=0, min_included=False)),
         vol.Optional("currency"): vol.All(cv.string, vol.Upper),
         vol.Optional("payer"): cv.string,
@@ -125,7 +127,7 @@ def async_register_services(hass: HomeAssistant) -> None:
 
 
 async def _add_expense(hass: HomeAssistant, call: ServiceCall) -> ServiceResponse:
-    target = _resolve_target(hass, call.data["device_id"][0])
+    target = _resolve_target(hass, call.data["device"])
     data = target.coordinator.data
     members = target.members
     currency = _currency(call.data.get("currency"), data.fallback_currency(target.group))
@@ -171,7 +173,7 @@ async def _add_expense(hass: HomeAssistant, call: ServiceCall) -> ServiceRespons
 
 async def _settle_up(hass: HomeAssistant, call: ServiceCall) -> ServiceResponse:
     """Record a payment from `payer` (default you) to `recipient`, as Split Pro's settle up does."""
-    target = _resolve_target(hass, call.data["device_id"][0])
+    target = _resolve_target(hass, call.data["device"])
     data = target.coordinator.data
     members = target.members
     currency = _currency(call.data.get("currency"), data.fallback_currency(target.group))
