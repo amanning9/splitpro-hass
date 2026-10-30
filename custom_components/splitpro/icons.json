@@ -1,0 +1,26 @@
+{
+  "entity": {
+    "sensor": {
+      "total_balance": {
+        "default": "mdi:scale-balance"
+      },
+      "group_balance": {
+        "default": "mdi:account-group"
+      },
+      "friend_balance": {
+        "default": "mdi:account-cash"
+      }
+    }
+  },
+  "services": {
+    "add_expense": {
+      "service": "mdi:cash-plus"
+    },
+    "settle_up": {
+      "service": "mdi:handshake"
+    },
+    "refresh": {
+      "service": "mdi:refresh"
+    }
+  }
+}

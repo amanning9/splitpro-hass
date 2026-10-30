@@ -1,0 +1,306 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Split Pro",
+        "description": "Needs a Split Pro build with the REST API (`/api/v1`).",
+        "data": {
+          "url": "URL",
+          "api_key": "API key",
+          "verify_ssl": "Verify SSL certificate"
+        },
+        "data_description": {
+          "url": "Split Pro's address, e.g. https://splitpro.example.com or http://192.168.1.10:3000.",
+          "api_key": "A secret from the API_KEYS setting on the Split Pro server (the part after `email:`).",
+          "verify_ssl": "Turn off only for a self-signed certificate."
+        }
+      },
+      "sensors": {
+        "title": "Balance sensors",
+        "description": "Choose which balance sensors to create. Positive means you're owed. A sensor is unavailable while its balance is in more than one currency. Expenses can be added to any group or friend whether or not it has a sensor.",
+        "data": {
+          "total_balance": "Total balance",
+          "group_balances": "Group balances",
+          "friend_balances": "Friend balances"
+        },
+        "data_description": {
+          "total_balance": "Your net balance across everyone.",
+          "group_balances": "A balance sensor for each group chosen.",
+          "friend_balances": "A balance sensor for each friend chosen."
+        }
+      },
+      "reauth_confirm": {
+        "title": "New API key",
+        "description": "Split Pro at {url} rejected the API key. Enter a new one.",
+        "data": {
+          "api_key": "API key"
+        },
+        "data_description": {
+          "api_key": "A secret from the API_KEYS setting on the Split Pro server (the part after `email:`)."
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Split Pro",
+        "data": {
+          "url": "URL",
+          "api_key": "API key",
+          "verify_ssl": "Verify SSL certificate"
+        },
+        "data_description": {
+          "url": "Split Pro's address, e.g. https://splitpro.example.com or http://192.168.1.10:3000.",
+          "api_key": "A secret from the API_KEYS setting on the Split Pro server (the part after `email:`).",
+          "verify_ssl": "Turn off only for a self-signed certificate."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Couldn't reach Split Pro's REST API at that URL. Check the address, and that it's a build with the API.",
+      "invalid_auth": "Split Pro rejected the API key.",
+      "invalid_url": "Enter a full URL starting with http:// or https://."
+    },
+    "abort": {
+      "already_configured": "This Split Pro account is already set up.",
+      "cannot_connect": "Couldn't reach Split Pro.",
+      "wrong_account": "That API key belongs to a different Split Pro user.",
+      "reauth_successful": "API key updated.",
+      "reconfigure_successful": "Split Pro reconfigured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Balance sensors",
+        "description": "Choose which balance sensors to create. Positive means you're owed. A sensor is unavailable while its balance is in more than one currency. Expenses can be added to any group or friend whether or not it has a sensor.",
+        "data": {
+          "total_balance": "Total balance",
+          "group_balances": "Group balances",
+          "friend_balances": "Friend balances"
+        },
+        "data_description": {
+          "total_balance": "Your net balance across everyone.",
+          "group_balances": "A balance sensor for each group chosen.",
+          "friend_balances": "A balance sensor for each friend chosen."
+        }
+      }
+    },
+    "abort": {
+      "cannot_connect": "Couldn't reach Split Pro to list groups and friends."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "total_balance": {
+        "name": "Total balance"
+      },
+      "group_balance": {
+        "name": "Balance"
+      },
+      "friend_balance": {
+        "name": "Balance"
+      }
+    }
+  },
+  "selector": {
+    "split": {
+      "options": {
+        "default": "Default (the group's or friend's saved split, else equal)",
+        "equal": "Equal",
+        "percentage": "Percentages",
+        "shares": "Shares",
+        "exact": "Exact amounts"
+      }
+    },
+    "category": {
+      "options": {
+        "general": "General",
+        "entertainment": "Entertainment",
+        "games": "Games",
+        "movies": "Movies",
+        "music": "Music",
+        "sports": "Sports",
+        "food": "Food",
+        "diningOut": "Dining out",
+        "groceries": "Groceries",
+        "liquor": "Liquor",
+        "home": "Home",
+        "electronics": "Electronics",
+        "furniture": "Furniture",
+        "supplies": "Household supplies",
+        "maintenance": "Maintenance",
+        "mortgage": "Mortgage",
+        "pets": "Pets",
+        "rent": "Rent",
+        "services": "Services",
+        "life": "Life",
+        "childcare": "Childcare",
+        "clothing": "Clothing",
+        "education": "Education",
+        "gifts": "Gifts",
+        "insurance": "Insurance",
+        "medical": "Medical",
+        "taxes": "Taxes",
+        "travel": "Travel",
+        "bicycle": "Bicycle",
+        "bus": "Bus",
+        "train": "Train",
+        "car": "Car",
+        "fuel": "Fuel",
+        "hotel": "Hotel",
+        "parking": "Parking",
+        "plane": "Plane",
+        "taxi": "Taxi",
+        "utilities": "Utilities",
+        "cleaning": "Cleaning",
+        "electricity": "Electricity",
+        "gas": "Gas",
+        "internet": "Internet",
+        "trash": "Rubbish",
+        "phone": "Phone",
+        "water": "Water"
+      }
+    }
+  },
+  "services": {
+    "add_expense": {
+      "name": "Add expense",
+      "description": "Adds an expense to a Split Pro group, or with a friend. Target one group or friend device. Returns the expense id and each person's share.",
+      "fields": {
+        "description": {
+          "name": "Description",
+          "description": "What it was for."
+        },
+        "amount": {
+          "name": "Amount",
+          "description": "The total, e.g. 42.50."
+        },
+        "currency": {
+          "name": "Currency",
+          "description": "Currency code, e.g. GBP. Defaults to the group's default currency, then yours, then GBP."
+        },
+        "paid_by": {
+          "name": "Paid by",
+          "description": "Who paid: a member's name, email or user id. Defaults to you."
+        },
+        "split": {
+          "name": "Split",
+          "description": "How to divide it. Default uses the group's or friend's saved default split, or splits equally."
+        },
+        "participants": {
+          "name": "Participants",
+          "description": "For an equal split: who's included (names, emails or user ids). Defaults to everyone."
+        },
+        "shares": {
+          "name": "Shares",
+          "description": "For percentages, shares or exact amounts: each person and their value, e.g. {\"Alex\": 60, \"Sam\": 40}. People left out pay nothing."
+        },
+        "category": {
+          "name": "Category",
+          "description": "Split Pro category."
+        },
+        "date": {
+          "name": "Date",
+          "description": "When it happened. Defaults to now."
+        }
+      }
+    },
+    "settle_up": {
+      "name": "Settle up",
+      "description": "Records a payment between two people in a group, or between you and a friend.",
+      "fields": {
+        "amount": {
+          "name": "Amount",
+          "description": "How much was paid."
+        },
+        "currency": {
+          "name": "Currency",
+          "description": "Currency code. Defaults to the group's default currency, then yours, then GBP."
+        },
+        "payer": {
+          "name": "Payer",
+          "description": "Who paid: a name, email or user id. Defaults to you."
+        },
+        "recipient": {
+          "name": "Recipient",
+          "description": "Who received it. Required for a group; for a friend it defaults to the other person."
+        },
+        "description": {
+          "name": "Description",
+          "description": "Defaults to \"<payer> paid <recipient>\"."
+        },
+        "date": {
+          "name": "Date",
+          "description": "When it happened. Defaults to now."
+        }
+      }
+    },
+    "refresh": {
+      "name": "Refresh",
+      "description": "Updates the Split Pro balance sensors now."
+    }
+  },
+  "exceptions": {
+    "unknown_target": {
+      "message": "Choose one Split Pro group or friend as the target."
+    },
+    "not_loaded": {
+      "message": "That Split Pro account isn't loaded."
+    },
+    "unknown_member": {
+      "message": "No one called {who} in {target}. Members: {members}."
+    },
+    "ambiguous_member": {
+      "message": "More than one person in {target} matches {who}; use their email or user id."
+    },
+    "unknown_currency": {
+      "message": "{currency} isn't a currency Split Pro knows."
+    },
+    "too_many_decimals": {
+      "message": "{amount} has too many decimal places for {currency}."
+    },
+    "too_precise": {
+      "message": "The {what} can have at most two decimal places."
+    },
+    "shares_required": {
+      "message": "A {split} split needs shares: each person and their value."
+    },
+    "shares_not_used": {
+      "message": "Shares are only used with a percentage, shares or exact split."
+    },
+    "participants_only_equal": {
+      "message": "Participants are only used with an equal split; for the others, list people in shares."
+    },
+    "amount_not_positive": {
+      "message": "The amount must be more than zero."
+    },
+    "negative_share": {
+      "message": "Shares can't be negative."
+    },
+    "no_participants": {
+      "message": "No one is included in the split."
+    },
+    "nothing_owed": {
+      "message": "With that split no one owes anything (the payer covers only themselves)."
+    },
+    "percentages_not_100": {
+      "message": "The percentages add up to {total}%, not 100%."
+    },
+    "exact_not_total": {
+      "message": "The exact amounts add up to {total}, not the expense's {amount}."
+    },
+    "unsupported_split": {
+      "message": "The saved default split ({split}) isn't supported; choose a split."
+    },
+    "recipient_required": {
+      "message": "Say who received the payment."
+    },
+    "settle_same_person": {
+      "message": "The payer and recipient are the same person."
+    },
+    "rejected": {
+      "message": "Split Pro refused the expense for {target}: {message}"
+    },
+    "write_failed": {
+      "message": "Couldn't save to Split Pro: {message}"
+    }
+  }
+}

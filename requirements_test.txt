@@ -1,0 +1,2 @@
+# Home Assistant test harness; 0.13.316 bundles Home Assistant 2026.2.3, which the tests were written against.
+pytest-homeassistant-custom-component==0.13.316

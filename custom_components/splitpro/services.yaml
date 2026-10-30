@@ -1,0 +1,136 @@
+add_expense:
+  target:
+    device:
+      integration: splitpro
+  fields:
+    description:
+      required: true
+      example: Groceries
+      selector:
+        text:
+    amount:
+      required: true
+      example: 42.50
+      selector:
+        number:
+          min: 0.001
+          max: 1000000
+          step: 0.01
+          mode: box
+    currency:
+      example: GBP
+      selector:
+        text:
+    paid_by:
+      example: Sam
+      selector:
+        text:
+    split:
+      default: default
+      selector:
+        select:
+          translation_key: split
+          options:
+            - default
+            - equal
+            - percentage
+            - shares
+            - exact
+    participants:
+      example: '["Alex", "Sam"]'
+      selector:
+        text:
+          multiple: true
+    shares:
+      example: '{"Alex": 60, "Sam": 40}'
+      selector:
+        object:
+    category:
+      default: general
+      selector:
+        select:
+          translation_key: category
+          options:
+            - general
+            - entertainment
+            - games
+            - movies
+            - music
+            - sports
+            - food
+            - diningOut
+            - groceries
+            - liquor
+            - home
+            - electronics
+            - furniture
+            - supplies
+            - maintenance
+            - mortgage
+            - pets
+            - rent
+            - services
+            - life
+            - childcare
+            - clothing
+            - education
+            - gifts
+            - insurance
+            - medical
+            - taxes
+            - travel
+            - bicycle
+            - bus
+            - train
+            - car
+            - fuel
+            - hotel
+            - parking
+            - plane
+            - taxi
+            - utilities
+            - cleaning
+            - electricity
+            - gas
+            - internet
+            - trash
+            - phone
+            - water
+    date:
+      selector:
+        datetime:
+
+settle_up:
+  target:
+    device:
+      integration: splitpro
+  fields:
+    amount:
+      required: true
+      example: 20
+      selector:
+        number:
+          min: 0.001
+          max: 1000000
+          step: 0.01
+          mode: box
+    currency:
+      example: GBP
+      selector:
+        text:
+    payer:
+      example: Sam
+      selector:
+        text:
+    recipient:
+      example: Alex
+      selector:
+        text:
+    description:
+      selector:
+        text:
+    date:
+      selector:
+        datetime:
+
+refresh:
