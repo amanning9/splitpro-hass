@@ -1,12 +1,17 @@
 # Split Pro for Home Assistant
 
+> [!WARNING]
+> **Not recommended for use yet.** This integration needs Split Pro's REST API, which isn't in a
+> Split Pro release: it's an open pull request
+> ([oss-apps/split-pro#784](https://github.com/oss-apps/split-pro/pull/784)) and may change before
+> it's merged, which could break this integration. Wait until the API is in a Split Pro release.
+
 Add expenses to [Split Pro](https://github.com/oss-apps/split-pro) groups (or with a friend) from
 Home Assistant, and optionally track your balances as sensors.
 
-It uses Split Pro's REST API (`/api/v1`), which isn't in a Split Pro release yet: it's upstream
-pull request [oss-apps/split-pro#784](https://github.com/oss-apps/split-pro/pull/784), available
-now on the [`alex-hacks`](https://github.com/alexm-forks/split-pro/tree/alex-hacks) build, where API
-keys come from the server's `API_KEYS` setting.
+It uses the REST API (`/api/v1`). To test it before release, use the
+[`alex-hacks`](https://github.com/alexm-forks/split-pro/tree/alex-hacks) build, where API keys come
+from the server's `API_KEYS` setting.
 
 ## Install
 
